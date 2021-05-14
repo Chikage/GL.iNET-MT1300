@@ -19,7 +19,7 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: router/lean.config
+  CONFIG_FILE: router/lean4.config
   DIY_SH: scripts/lean.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -178,7 +178,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.1.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-          keep_latest: 2
+          keep_latest: 9
           delete_tags: true
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
