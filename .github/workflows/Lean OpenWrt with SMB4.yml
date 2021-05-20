@@ -146,7 +146,7 @@ jobs:
       id: tag 
       if: env.UPLOAD_RELEASE == 'true' && !cancelled() 
       run: | 
-         echo "::set-output name=release_tag::$(date +"%Y.%m.%d")-Lean" 
+         echo "::set-output name=release_tag::$(date +"%Y.%m.%d")-Lean SMB4" 
          echo "::set-output name=release_date::$(date +"%Y.%m.%d")"
     
     - name: Upload firmware to release
