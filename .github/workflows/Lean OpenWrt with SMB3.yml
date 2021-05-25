@@ -1,9 +1,6 @@
 #=================================================
-# https://github.com/P3TERX/Actions-OpenWrt
-# Description: Build OpenWrt using GitHub Actions
-# Lisence: MIT
-# Author: P3TERX
-# Blog: https://p3terx.com
+# Function: Workflows for Build GL.iNET MT1300
+# Cron: min (0 - 59) / hour (0 - 23) / day of month (1 - 31) / month (1 - 12) / day of week (0 - 6)(Sunday - Saturday)
 #=================================================
 
 name: Lean OpenWrt with SMB3
@@ -13,8 +10,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: 0 6 * * *
-  # watch:
-  #   types: started
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -25,7 +20,7 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: true
+  UPLOAD_WETRANSFER: false
   RECENT_LASTEST: 15
   TZ: Asia/Shanghai
 
@@ -57,6 +52,7 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
+        echo "COMPILE_STARTINGTIME=$(date +"%Y.%m.%d.%H%M")" >> $GITHUB_ENV
         
     - name: Clone Source Code
       working-directory: /workdir
@@ -64,7 +60,12 @@ jobs:
         df -hT $PWD
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-
+        
+    - name: Load Custom Feeds
+      run: |            
+        chmod +x $DIY_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_SH                                                                                     
     - name: Update Feeds
       id: update
       run: cd openwrt && ./scripts/feeds update -a
@@ -76,9 +77,6 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_SH
 
     - name: Download Package
       id: package
@@ -126,7 +124,7 @@ jobs:
         name: openwrt_${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
         path: ${{ env.FILEPATH }}
         retention-days: ${{ env.RECENT_LASTEST }}
-        if-no-files-found: ignore  
+        if-no-files-found: ignore
         
     - name: Upload firmware to cowtransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
