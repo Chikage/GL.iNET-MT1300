@@ -9,7 +9,7 @@ on:
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    - cron: 0 6 * * *
+    - cron: 0 9 * * *
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -176,7 +176,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.1.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-          keep_latest: 9
+          keep_latest: 7
           delete_tags: true
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
