@@ -8,9 +8,11 @@ git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
 git clone -b master https://github.com/jerrykuku/luci-app-argon-config.git
 popd
 
-mkdir package/community
-pushd package/community
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
-popd
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
 
-#sed -i 's/192.168/10.168/g' package/base-files/files/bin/config_generate
+# mkdir package/community
+# pushd package/community
+# git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
+# popd
+
+# sed -i 's/192.168/10.168/g' package/base-files/files/bin/config_generate
