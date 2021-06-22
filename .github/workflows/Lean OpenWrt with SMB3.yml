@@ -66,7 +66,8 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install Feeds
-      run: cd openwrt && ./scripts/feeds install -a    
+      run: cd openwrt && ./scripts/feeds install -a  
+      
     - name: Load Custom Feeds
       run: |            
         chmod +x $DIY_SH
