@@ -71,7 +71,9 @@ jobs:
     - name: Load Custom Feeds
       run: |            
         chmod +x $DIY_SH
-        cd openwrt       $GITHUB_WORKSPACE/$DIY_SH                                                                                  
+        cd openwrt       
+        $GITHUB_WORKSPACE/$DIY_SH   
+        
     - name: Load Custom Configuration
       run: |
         [ -e files ] && mv files openwrt/files
