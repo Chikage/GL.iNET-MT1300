@@ -61,18 +61,16 @@ jobs:
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
-    - name: Load Custom Feeds
-      run: |            
-        chmod +x $DIY_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_SH                                                                                     
     - name: Update Feeds
       id: update
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install Feeds
-      run: cd openwrt && ./scripts/feeds install -a
-
+      run: cd openwrt && ./scripts/feeds install -a    
+    - name: Load Custom Feeds
+      run: |            
+        chmod +x $DIY_SH
+        cd openwrt       $GITHUB_WORKSPACE/$DIY_SH                                                                                  
     - name: Load Custom Configuration
       run: |
         [ -e files ] && mv files openwrt/files
